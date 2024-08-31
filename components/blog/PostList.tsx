@@ -14,7 +14,7 @@ import { useBlogStore } from "../../stores/blogStore";
 import { useEffect } from "react";
 
 function PostList() {
-   const { posts, nextPage, PrevPage, totalCount, fetchPosts } = useBlogStore();
+   const { posts, nextPage, prevPage, totalCount, fetchPosts } = useBlogStore();
 
    useEffect(() => {
       fetchPosts();
@@ -59,8 +59,8 @@ function PostList() {
             </div>
             <div className="mt-5 flex justify-between">
                <Button
-                  onClick={() => PrevPage && fetchPosts(PrevPage)}
-                  disabled={!PrevPage}
+                  onClick={() => prevPage && fetchPosts(prevPage)}
+                  disabled={!prevPage}
                >
                   Previous
                </Button>

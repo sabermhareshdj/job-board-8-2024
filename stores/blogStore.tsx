@@ -2,7 +2,6 @@ import { create } from "zustand";
 
 interface Comment {
    id: number;
-   title: string;
    user_id: number;
    post_id: number;
    content: string;
@@ -11,6 +10,7 @@ interface Comment {
 
 interface Post {
    id: number;
+   title: string;
    author_id: number;
    content: string;
    publish_date: string;
@@ -22,15 +22,17 @@ interface Post {
 interface BlogState {
    posts: Post[];
    nextPage: string | null;
-   PrevPage: string | null;
+   prevPage: string | null;
    totalCount: number;
    selectedPost: Post | null;
+   fetchPosts: (url?: string) => Promise<void>;
+   fetchPostById: (id: number) => Promise<void>;
 }
 
 export const useBlogStore = create<BlogState>((set) => ({
    posts: [],
    nextPage: null,
-   PrevPage: null,
+   prevPage: null,
    totalCount: 0,
    selectedPost: null,
 
@@ -43,7 +45,7 @@ export const useBlogStore = create<BlogState>((set) => ({
          set({
             posts: data.results,
             nextPage: data.next,
-            PrevPage: data.previous,
+            prevPage: data.previous,
             totalCount: data.count,
          });
       } catch (error) {
@@ -51,10 +53,11 @@ export const useBlogStore = create<BlogState>((set) => ({
       }
    },
 
-   fetchPostById: async (id) => {
+   fetchPostById: async (id:number) => {
       try {
-         const response = fetch(`/api/blog/${id}`);
+         const response = await fetch(`/api/blog/${id}`);
          const data = await response.json();
+         console.log(data)
          set({
             selectedPost: data,
          });
